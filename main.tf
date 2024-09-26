@@ -1,5 +1,7 @@
 provider "aws" {
-  region = "us-east-1"
+  shared_config_files      = ["/root/.aws/config"]
+  shared_credentials_files = ["/root/.aws/credentials"]
+  profile                  = "default"
 }
 
 variable "http_port" {
@@ -40,6 +42,12 @@ resource "aws_security_group" "instance" {
     from_port = var.http_port
     to_port = var.http_port
     protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
