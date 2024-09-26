@@ -7,7 +7,7 @@ resource "aws_instance" "test_instance" {
   instance_type = "t3.medium"
   iam_instance_profile = "AWSSupportPatchwork-SSMRoleForInstances"
   
-  user_data = "userdata"
+  user_data = file("/terraform/userdata")
 
   tags = {
     Name = "testserver001"
