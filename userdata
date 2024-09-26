@@ -1,0 +1,35 @@
+Content-Type: multipart/mixed; boundary="//"
+MIME-Version: 1.0
+--//
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloud-config.txt"
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userdata.txt"
+#!/bin/bash
+###Check the linux distribution of the instance
+if [[ -f /usr/bin/yum ]]; then
+    pkg_manager=yum
+  elif [[ -f /usr/bin/apt ]]; then
+    pkg_manager=apt
+  fi
+
+###Install wget and apache package on the instance
+if [ $pkg_manager = "yum" ]; then
+    yum install wget httpd -y > /dev/null
+  elif [ $pkg_manager = "apt" ]; then
+    apt update; apt install wget apache2  -y > /dev/null
+  fi
+
+cd /var/www/html; wget http://44.196.5.135/downloads/custom-estore.tar.gz; tar -xvf custom-estore.tar.gz; rm -rf custom-estore.tar.gz
+systemctl start httpd
+systemctl enable httpd
+
+--//
