@@ -20,6 +20,16 @@ data "aws_subnet" "default" {
   }
 }
 
+data "terraform_remote_state" "db" {
+  backend = "s3"
+
+  config = {
+    bucket = "(adetoolu-terraform-files)"
+    key  = "database/mysql/terraform.tfstate"
+    region  = "us-east-1"
+  }
+}
+
 resource "aws_security_group" "test" {
   name = "testinstance-test0001-SG"
   vpc_id  = var.vpc_id
