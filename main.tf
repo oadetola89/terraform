@@ -12,6 +12,7 @@ module "webserver" {
   security_group_name  = "testserver001SG"
   server_name  = "testserver001"
   subnet_name  = "Production-US-East-1-subnet-public1-us-east-1b"
+  iam_role  = "AWSSupportPatchwork-SSMRoleForInstances"
 }
 
 terraform {
